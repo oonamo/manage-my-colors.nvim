@@ -5,11 +5,11 @@ for _, v in ipairs(colorschemes) do
 	table.insert(color_scheme_tbl, v.name)
 end
 
-commander("NextFlavour", function()
+commander("ManageMyFlavour", function()
 	require("manage_my_colors.state").next_flavour()
 end, { nargs = 0 })
 
-commander("ManageMyTheme", function(opts)
+commander("ManageMyColors", function(opts)
 	local state = require("manage_my_colors.state")
 	if opts.fargs[1] then
 		state.update_theme(require("manage_my_colors").get_colorscheme_from_name(opts.fargs[1]))

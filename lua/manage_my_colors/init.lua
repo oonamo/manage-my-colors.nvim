@@ -29,6 +29,7 @@ function M.get_colorschemes()
 end
 
 function M.get_persistance_path()
+	---@diagnostic disable-next-line: return-type-mismatch
 	return M.config.persistance
 end
 

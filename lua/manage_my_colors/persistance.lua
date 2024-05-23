@@ -8,6 +8,7 @@
 ---@field state State
 local M = {}
 
+--- TODO: Use vim.uv for faster file ops?
 function M.__load(opts)
 	---@diagnostic disable-next-line: param-type-mismatch
 	local file = io.open(opts.persistance)

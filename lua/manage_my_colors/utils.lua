@@ -75,19 +75,4 @@ function utils.append_flavour_to_name(sep)
 	return append
 end
 
-local flavours = { "rose-pine", "mmoner", "somethinger" }
-
-local active_flavours = {
-	["rose-pine"] = function()
-		print("rose_pine in tbl")
-	end,
-	["rose-pine-mmon"] = function()
-		print("moon in tbl")
-	end,
-}
-
-utils.match_flavour(active_flavours, function(name, flavour)
-	print("flavour in cb", flavour)
-end)("rose-pine", "mmoner", flavours)
-
 return utils

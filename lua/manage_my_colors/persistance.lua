@@ -8,7 +8,6 @@
 ---@field state State
 local M = {}
 
----@return State, string|nil
 function M.__load(opts)
 	---@diagnostic disable-next-line: param-type-mismatch
 	local file = io.open(opts.persistance)
@@ -16,7 +15,8 @@ function M.__load(opts)
 	M.persistance_path = opts.persistance
 	if file then
 		local contents = file:read()
-		local colorscheme, capture = string.match(contents, "([^,]*),(.*)")
+		local split = vim.split(contents, ",")
+		local colorscheme, capture = split[1], split[2]
 		local flavours = vim.split(capture, "|")
 		if flavours and #flavours == 1 then
 			---@diagnostic disable-next-line: cast-local-type

@@ -29,6 +29,7 @@ end
 
 function M.init(opts)
 	M.after = opts.after_all
+	M.current_idx = 1
 	if not opts.persistance then
 		vim.notify("persistance is not setup")
 		return
@@ -36,8 +37,8 @@ function M.init(opts)
 	local state, err = persistance.__load(opts)
 	if err then
 		M.active_theme = opts.default_theme
-		M.current_idx = 1
 		if not M.active_theme.flavours then
+			-- goto color
 			M.do_colorscheme()
 			return
 		end
@@ -48,14 +49,16 @@ function M.init(opts)
 	for _, v in pairs(opts.colorschemes) do
 		if v.name == state.colorscheme then
 			M.active_theme = v
+			break
 		end
 	end
 	if not M.active_theme then
+		vim.notify("did not find " .. state.colorscheme)
 		M.active_theme = opts.default_theme
+		goto color
 	end
 	if state.flavour == nil then
 		state.flavour = ""
-		M.current_idx = 1
 	elseif M.active_theme.flavours then
 		for i, v in ipairs(M.active_theme.flavours) do
 			if type(v) == "table" then
@@ -68,14 +71,9 @@ function M.init(opts)
 				break
 			end
 		end
+		goto color
 	end
-	if M.active_theme == nil then
-		vim.notify("did not find " .. state.colorscheme)
-		M.active_theme = opts.default_theme
-		state.colorscheme = M.active_theme.name
-		state.flavour = M.active_theme.flavours[1]
-		M.current_idx = 1
-	end
+	::color::
 	M.do_colorscheme()
 end
 
@@ -84,6 +82,9 @@ function M.get_active_themes()
 end
 
 function M.update_theme(new_theme)
+	if not new_theme then
+		return
+	end
 	M.active_theme = new_theme
 	M.current_idx = 1
 	M.do_colorscheme()

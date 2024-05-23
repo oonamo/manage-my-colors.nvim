@@ -5,6 +5,8 @@ local state = require("manage_my_colors.state")
 ---@field config Config
 ---@field persistance? Persistance
 ---@field get_colorscheme_from_name fun(name: string): Colorscheme|nil
+---@field get_colorschemes fun(): Colorscheme[]
+---@field get_persistance_path fun(): string
 local M = {}
 
 function M.setup(opts)

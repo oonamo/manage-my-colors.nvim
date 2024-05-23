@@ -73,28 +73,19 @@ function M.__setMappings()
 	local mappings = {
 		k = function()
 			M.update_cursor(-1)
-			-- M.position = M.position - 1 > 0 and M.position - 1 or 1
-			vim.notify(string.format("%d", M.position))
-			-- vim.api.nvim_win_set_cursor(win, { M.position, 0 })
 		end,
 		j = function()
 			M.update_cursor(1)
-			-- M.position = M.position + 1 < M.max_len and M.position + 1 or M.max_len
-			vim.notify(string.format("%d", M.position))
-			-- vim.api.nvim_win_set_cursor(win, { M.position, 0 })
 		end,
 		["<Esc>"] = function()
-			-- vim.api.nvim_win_close(win, true)
 			M.close_window()
 		end,
 		["q"] = function()
-			-- vim.api.nvim_win_close(win, true)
 			M.close_window()
 		end,
 		["<cr>"] = function()
 			M.selection = M.themes[M.position]
 			M.callback(M.selection)
-			-- vim.api.nvim_win_close(win, true)
 			M.close_window()
 		end,
 	}

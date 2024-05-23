@@ -12,7 +12,7 @@ end, { nargs = 0 })
 commander("ManageMyTheme", function(opts)
 	local state = require("manage_my_colors.state")
 	if opts.fargs[1] then
-		state.update_theme(opts.fargs[1])
+		state.update_theme(require("manage_my_colors").get_colorscheme_from_name(opts.fargs[1]))
 		return
 	end
 	local popup = require("manage_my_colors.popup")

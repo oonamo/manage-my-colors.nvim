@@ -54,10 +54,10 @@ vim.keymap.set("n", "<leader>cp", "<CMD>ManageMyColors<CR>", { desc = "Toggle Co
 vim.keymap.set("n", "<leader>cf", "<CMD>ManageMyFlavour<CR>", { desc = "Toggle next flavour" })
 ```
 ### Commands
-| Command                        | Description                                                                                                                                                                                                                                                            |
-|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `:ManageMyColors` THEME or NIL | If called with no arguments, It will create a popup with all your colorschemes. Press `<CR>` to select, and it wall call your colorscheme with the first flavour. If the `THEME` argument is provided, it wall call the first flavour of your selected theme. |
-| `:ManageMyFlavour`             | Calls the next theme of your colorscheme with an action
+| Command                        | Description                                                                                                                                                                                                                                                   |
+|--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `:ManageMyColors Theme?` | If called with no arguments, it will create a popup with all your colorschemes. Press `<CR>` to select, and it will call your colorscheme with the first flavour. If the `THEME` argument is provided, it wall call the first flavour of your selected theme. |
+| `:ManageMyFlavour Flavour?`             | If called with no arguments, it will create a popup with all your flavours for the current colorscheme. Press <CR> to select, and it will the flavour with your action
 ## Utils
 See their implementation at utils.lua
 <details open>
@@ -174,6 +174,8 @@ See their implementation at utils.lua
 ---@field after_all fun(active_theme: Colorscheme, active_flavour: any)
 ---@field before_all fun(active_theme: Colorscheme, active_flavour: any)
 
+---@alias flavour string
+
 ---@class State
 ---@field colorscheme string
 ---@field flavour string|string[]|nil
@@ -181,11 +183,14 @@ See their implementation at utils.lua
 ---@field active_theme Colorscheme
 ---@field do_colorscheme fun()
 ---@field init fun(opts: Config)
----@field get_active_themes fun(): Colorscheme
+---@field get_theme fun(): Colorscheme
 ---@field update_theme fun(new_theme: Colorscheme)
 ---@field next_flavour fun()
 ---@field after fun(active_theme: Colorscheme, active_flavour: any)
 ---@field before fun(active_theme: Colorscheme, active_flavour: any)
+---@field get_flavour_index_from_name fun(name: string): number
+---@field change_flavour_by_name fun(name: string)
+---@field change_flavour_by_index fun(idx: number)
 
 ---@class Persistance
 ---@field __load fun(opts: Config): State, string|nil
@@ -210,14 +215,15 @@ See their implementation at utils.lua
 
 ## Integrations
 ### Wezterm
-> [!NOTE]  Untested
+> [!NOTE]  
+> This is untested as of now 
 ```lua
 require("manage_my_colors").setup({
     after_all = function(active_theme, active_flavour)
 	local file_path = vim.fn.expand("~") .. "/.config/wezterm/colorscheme"
 	file_path = file_path:gsub("\\", "/")
 	local file = io.open(file_path, "w")
-    local colorscheme = active_theme.name
+         local colorscheme = active_theme.name
 	if file then
 		if type(active_flavour) == "table" then
                     for _, v in ipairs(active_flavour) do

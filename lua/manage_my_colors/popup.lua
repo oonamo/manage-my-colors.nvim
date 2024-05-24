@@ -9,11 +9,10 @@ local buf, win
 ---@field buf number
 ---@field win number
 ---@field dimensions fun(): Dimensions
----@field openwindow fun(themes: Colorscheme[], callback: fun(Colorscheme))
+---@field openwindow fun(themes: any[], callback: fun(Colorscheme))
 ---@field callback fun(Colorscheme)
 ---@field position number
 ---@field max_len number
----@field selection Colorscheme
 ---@field get_selection fun(): Colorscheme
 local M = {}
 
@@ -31,22 +30,11 @@ function M.dimensions()
 	}
 end
 
-local testThemes = {
-	{ name = "modus" },
-	{ name = "catpuccin" },
-	{ name = "kanagawa" },
-	{ name = "doom-one" },
-	{ name = "gruvbox" },
-	{ name = "rose-pine" },
-}
-
-function M.openwindow(themes, callback)
+function M.openwindow(items, callback)
 	M.callback = callback
-	-- DEBUG
-	M.themes = themes
 	M.position = 1
 	buf = vim.api.nvim_create_buf(false, true)
-	M.max_len = #themes
+	M.max_len = #items
 	vim.api.nvim_set_option_value("filetype", "mmc", { buf = buf })
 	vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = buf })
 
@@ -64,8 +52,8 @@ function M.openwindow(themes, callback)
 	M.__setMappings()
 	win = vim.api.nvim_open_win(buf, true, winopts)
 	vim.api.nvim_set_option_value("cursorline", true, { win = win })
-	for i, v in ipairs(themes) do
-		vim.api.nvim_buf_set_lines(buf, i - 1, -1, true, { v.name })
+	for i, v in ipairs(items) do
+		vim.api.nvim_buf_set_lines(buf, i - 1, -1, true, { v })
 	end
 end
 
@@ -84,8 +72,7 @@ function M.__setMappings()
 			M.close_window()
 		end,
 		["<cr>"] = function()
-			M.selection = M.themes[M.position]
-			M.callback(M.selection)
+			M.callback(M.position)
 			M.close_window()
 		end,
 	}
@@ -109,14 +96,8 @@ function M.update_cursor(direction)
 	vim.api.nvim_win_set_cursor(win, { M.position, 0 })
 end
 
-function M.get_selection()
-	return M.selection
-end
-
 function M.close_window()
 	vim.api.nvim_win_close(win, true)
 end
-
--- M.openwindow(testThemes)
 
 return M

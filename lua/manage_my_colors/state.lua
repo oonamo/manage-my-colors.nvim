@@ -1,3 +1,5 @@
+---@alias flavour string
+
 ---@class State
 ---@field colorscheme string
 ---@field flavour string|string[]|nil
@@ -5,11 +7,14 @@
 ---@field active_theme Colorscheme
 ---@field do_colorscheme fun()
 ---@field init fun(opts: Config)
----@field get_active_themes fun(): Colorscheme
+---@field get_theme fun(): Colorscheme
 ---@field update_theme fun(new_theme: Colorscheme)
 ---@field next_flavour fun()
 ---@field after fun(active_theme: Colorscheme, active_flavour: any)
 ---@field before fun(active_theme: Colorscheme, active_flavour: any)
+---@field get_flavour_index_from_name fun(name: string): number
+---@field change_flavour_by_name fun(name: string)
+---@field change_flavour_by_index fun(idx: number)
 local M = {}
 
 local persistance = require("manage_my_colors.persistance")
@@ -80,7 +85,7 @@ function M.init(opts)
 	M.do_colorscheme()
 end
 
-function M.get_active_themes()
+function M.get_theme()
 	return M.active_theme
 end
 
@@ -102,6 +107,28 @@ function M.next_flavour()
 	M.current_idx = M.current_idx == #M.active_theme.flavours and 1 or M.current_idx + 1
 	M.do_colorscheme()
 	persistance.__save(M.active_theme, M.current_idx)
+end
+
+function M.change_flavour_by_name(flavour)
+	local idx = M.get_flavour_index_from_name(flavour)
+	M.current_idx = idx
+	M.do_colorscheme()
+end
+
+function M.change_flavour_by_index(idx)
+	M.current_idx = idx
+	M.do_colorscheme()
+end
+
+function M.get_flavour_index_from_name(flavour)
+	for i, v in ipairs(M.active_theme) do
+		if type(v) == "string" and v == flavour then
+			return i
+		elseif v[1] == flavour[1] and v[2] == flavour[2] then
+			return i
+		end
+	end
+	return -1
 end
 
 return M

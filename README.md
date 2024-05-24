@@ -219,8 +219,11 @@ See their implementation at utils.lua
 > This is untested as of now 
 ```lua
 require("manage_my_colors").setup({
+    -- calls this function after every change in flavour or colorscheme
     after_all = function(active_theme, active_flavour)
+         -- Open some file to store the data
 	local file_path = vim.fn.expand("~") .. "/.config/wezterm/colorscheme"
+         -- Normalize path
 	file_path = file_path:gsub("\\", "/")
 	local file = io.open(file_path, "w")
          local colorscheme = active_theme.name
@@ -228,13 +231,13 @@ require("manage_my_colors").setup({
 		if type(active_flavour) == "table" then
                     for _, v in ipairs(active_flavour) do
                         if v ~= "" or v ~= " " then
-                            colorscheme = colorscheme .. "-" .. v
+                            colorscheme = colorscheme .. "|" .. v
                         end
                     end
 		elseif active_flavour ~= "" then
-                        colorscheme = colorscheme .. "-" .. active_flavour
+                        colorscheme = colorscheme .. "|" .. active_flavour
 		end
-		if colorscheme:sub(-1) == "-" then
+		if colorscheme:sub(-1) == "|" then
 			colorscheme = colorscheme:sub(1, -2)
 		end
 		file:write(colorscheme)

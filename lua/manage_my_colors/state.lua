@@ -9,6 +9,7 @@
 ---@field update_theme fun(new_theme: Colorscheme)
 ---@field next_flavour fun()
 ---@field after fun(active_theme: Colorscheme, active_flavour: any)
+---@field before fun(active_theme: Colorscheme, active_flavour: any)
 local M = {}
 
 local persistance = require("manage_my_colors.persistance")
@@ -16,6 +17,7 @@ local persistance = require("manage_my_colors.persistance")
 function M.do_colorscheme()
 	local theme = M.active_theme
 	local flavour = theme.flavours and theme.flavours[M.current_idx] or nil
+	M.before(theme, flavour)
 	if type(theme.action) == "function" then
 		local found = theme.action(theme.name, flavour, theme.flavours)
 		if not found then
@@ -29,6 +31,7 @@ end
 
 function M.init(opts)
 	M.after = opts.after_all
+	M.before = opts.before_all
 	M.current_idx = 1
 	if not opts.persistance then
 		vim.notify("persistance is not setup")

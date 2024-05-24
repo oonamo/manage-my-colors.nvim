@@ -9,6 +9,7 @@ local M = {}
 ---@field default_theme Colorscheme
 ---@field colorschemes Colorscheme[]
 ---@field after_all fun(active_theme: Colorscheme, active_flavour: any)
+---@field before_all fun(active_theme: Colorscheme, active_flavour: any)
 
 ---@type Config
 local defaults = {
@@ -16,6 +17,7 @@ local defaults = {
 	persistance = true,
 	colorschemes = { { name = "habamax" }, { name = "desert" } },
 	after_all = function() end,
+	before_all = function() end,
 }
 
 ---@type Config

@@ -172,6 +172,7 @@ See their implementation at utils.lua
 ---@field default_theme Colorscheme
 ---@field colorschemes Colorscheme[]
 ---@field after_all fun(active_theme: Colorscheme, active_flavour: any)
+---@field before_all fun(active_theme: Colorscheme, active_flavour: any)
 
 ---@class State
 ---@field colorscheme string
@@ -184,6 +185,7 @@ See their implementation at utils.lua
 ---@field update_theme fun(new_theme: Colorscheme)
 ---@field next_flavour fun()
 ---@field after fun(active_theme: Colorscheme, active_flavour: any)
+---@field before fun(active_theme: Colorscheme, active_flavour: any)
 
 ---@class Persistance
 ---@field __load fun(opts: Config): State, string|nil

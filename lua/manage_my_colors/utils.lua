@@ -59,15 +59,17 @@ end
 
 function utils.append_flavour_to_name(sep)
 	sep = sep or "-"
-	local function append(name, flavour)
+	local function append(name, flavour, flavours)
 		if flavour == "" or not flavour then
 			vim.cmd.colorscheme(name)
 			return true
 		end
-		local active_themes = require("manage_my_colors.state").active_theme.flavours or {}
-		for _, v in pairs(active_themes) do
+		for _, v in pairs(flavours) do
 			if type(v) == "string" and v == flavour then
 				vim.cmd.colorscheme(name .. sep .. v)
+				return true
+			elseif type(v) == "table" and v[1] == flavour[1] and v[2] == flavour[2] then
+				vim.cmd.colorscheme(name .. sep .. v[1] .. sep .. v[2])
 				return true
 			end
 		end

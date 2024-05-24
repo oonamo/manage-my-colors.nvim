@@ -39,7 +39,7 @@ function M.init(opts)
 	M.before = opts.before_all
 	M.current_idx = 1
 	if not opts.persistance then
-		vim.notify("persistance is not setup")
+		vim.notify("persistance is not setup", vim.logs.levels.ERROR)
 		return
 	end
 	local state, err = persistance.__load(opts)
@@ -61,7 +61,7 @@ function M.init(opts)
 		end
 	end
 	if not M.active_theme then
-		vim.notify("did not find " .. state.colorscheme)
+		vim.notify("did not find " .. state.colorscheme, vim.log.levels.WARN)
 		M.active_theme = opts.default_theme
 		goto color
 	end
@@ -100,8 +100,8 @@ function M.update_theme(new_theme)
 end
 
 function M.next_flavour()
-	if #M.active_theme.flavours == 1 then
-		vim.notify("only one flavour")
+	if #M.active_theme.flavours == 1 or M.active_theme.flavours == nil then
+		vim.notify("no other flavour for this colorscheme", vim.log.levels.INFO)
 		return
 	end
 	M.current_idx = M.current_idx == #M.active_theme.flavours and 1 or M.current_idx + 1
@@ -113,11 +113,13 @@ function M.change_flavour_by_name(flavour)
 	local idx = M.get_flavour_index_from_name(flavour)
 	M.current_idx = idx
 	M.do_colorscheme()
+	persistance.__save(M.active_theme, M.current_idx)
 end
 
 function M.change_flavour_by_index(idx)
 	M.current_idx = idx
 	M.do_colorscheme()
+	persistance.__save(M.active_theme, M.current_idx)
 end
 
 function M.get_flavour_index_from_name(flavour)

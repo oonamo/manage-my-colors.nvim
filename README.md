@@ -64,9 +64,9 @@ See their implementation at utils.lua
 <summary> Utility Definitions</summary>
 
 ### `utils.default()`
-**Type**: func()
+**Type**: `func()`
 
-**Returns**: func(name: string, flavour: string|string[], flavours)
+**Returns**: `func(name: string, flavour: string|string[], flavours)`
 
 **Desc**: Calls `vim.cmd.colorscheme` for the given flavour. Only use if you define flavours as the command needed to use the colorscheme.
 #### Example Usage
@@ -78,9 +78,9 @@ See their implementation at utils.lua
 }
 ```
 ### `utils.match_flavour`
-**Type**: func(matcher: table, callback: fun(name: string, flavour: string|string[], flavours)
+**Type**: `func(matcher: table, callback: fun(name: string, flavour: string|string[], flavours)`
 
-**Returns**: func(name: string, flavour: string|string[], flavours)
+**Returns**: `func(name: string, flavour: string|string[], flavours)`
 
 **Desc**: Matches the flavour to the key. If it is found in the table, the callback function is called with the following parameters. If it does not find the flavour in the table, it defaults to the callback with the same parameters.
 #### Example Usage
@@ -105,9 +105,9 @@ See their implementation at utils.lua
 }
 ```
 ### `utils.match_table`
-**Type**: fun(cb: fun(name, flavour, flavours))
+**Type**: `fun(cb: fun(name, flavour, flavours))`
 
-**Returns**: func(name: string, flavour: string|string[], flavours)
+**Returns**: `func(name: string, flavour: string|string[], flavours)`
 
 **Desc**: Matches a 2 element flavour array, and returns it as the flavour parameter.
 
@@ -132,9 +132,9 @@ See their implementation at utils.lua
 ```
 
 ### `utils.append_flavour_to_name`
-**Type**: fun(seperator: string|"-")
+**Type**: `fun(seperator: string|"-")`
 
-**Returns**: func(name: string, flavour: string|string[], flavours)
+**Returns**: `func(name: string, flavour: string|string[], flavours)`
 
 **Desc**: Appends the flavour to the name. In this example, if the current flavour is `wave`, the flavour parameter becomes `kanagawa-wave`. It then calls `vim.cmd.colorscheme` with the new flavour parameter.
 

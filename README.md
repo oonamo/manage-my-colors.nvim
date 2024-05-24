@@ -56,8 +56,9 @@ vim.keymap.set("n", "<leader>cf", "<CMD>ManageMyFlavour<CR>", { desc = "Toggle n
 ### Commands
 | Command                        | Description                                                                                                                                                                                                                                                   |
 |--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `:ManageMyColors Theme?` | If called with no arguments, it will create a popup with all your colorschemes. Press `<CR>` to select, and it will call your colorscheme with the first flavour. If the `THEME` argument is provided, it wall call the first flavour of your selected theme. |
-| `:ManageMyFlavour Flavour?`             | If called with no arguments, it will create a popup with all your flavours for the current colorscheme. Press <CR> to select, and it will the flavour with your action
+| `:ManageMyColors Theme?`       | If called with no arguments, it will create a popup with all your colorschemes. Press `<CR>` to select, and it will call your colorscheme with the first flavour. If the `THEME` argument is provided, it wall call the first flavour of your selected theme. |
+| `:ManageMyFlavour Flavour?`             | If called with no arguments, it will create a popup with all your flavours for the current colorscheme. Press <CR> to select, and it will execute the action for the colorscheme with the new flavour
+
 ## Utils
 See their implementation at utils.lua
 <details open>

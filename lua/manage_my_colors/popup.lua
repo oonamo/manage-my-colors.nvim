@@ -9,7 +9,7 @@ local buf, win
 ---@field buf number
 ---@field win number
 ---@field dimensions fun(): Dimensions
----@field openwindow fun(themes: any[], callback: fun(Colorscheme))
+---@field openwindow fun(themes: any[], callback: fun(idx: number))
 ---@field callback fun(Colorscheme)
 ---@field position number
 ---@field max_len number
@@ -25,7 +25,7 @@ function M.dimensions()
 	return {
 		row = math.ceil((totalHeight - height) / 2 - 1),
 		col = math.ceil((totalWidth - width) / 2),
-		height = height,
+		height = M.max_len,
 		width = width,
 	}
 end

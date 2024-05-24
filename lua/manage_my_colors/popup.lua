@@ -53,7 +53,13 @@ function M.openwindow(items, callback)
 	win = vim.api.nvim_open_win(buf, true, winopts)
 	vim.api.nvim_set_option_value("cursorline", true, { win = win })
 	for i, v in ipairs(items) do
-		vim.api.nvim_buf_set_lines(buf, i - 1, -1, true, { v })
+		-- TODO: vim.isarray would be better, but idk when it was introduced
+		if type(v) == "table" then
+			local line = string.format("%s, %s", v[1], v[2])
+			vim.api.nvim_buf_set_lines(buf, i - 1, -1, true, { line })
+		else
+			vim.api.nvim_buf_set_lines(buf, i - 1, -1, true, { v })
+		end
 	end
 end
 

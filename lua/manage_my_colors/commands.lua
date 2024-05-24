@@ -14,11 +14,11 @@ commander("ManageMyFlavour", function()
 	if not flavour_cache then
 		flavour_cache = state.get_theme().flavours
 		if not flavour_cache then
+			vim.notify("current colorscheme has no flavours setup")
 			return
 		end
 	end
 	popup.openwindow(flavour_cache, function(idx)
-		-- vim.notify("selected " .. flavour_cache[idx])
 		state.change_flavour_by_index(idx)
 	end)
 end, {
@@ -37,7 +37,6 @@ commander("ManageMyColors", function(opts)
 	local popup = require("manage_my_colors.popup")
 	popup.openwindow(color_scheme_tbl, function(idx)
 		if idx then
-			vim.notify("selected " .. colorschemes[idx].name)
 			state.update_theme(colorschemes[idx])
 			flavour_cache = state.get_theme().flavours
 			return

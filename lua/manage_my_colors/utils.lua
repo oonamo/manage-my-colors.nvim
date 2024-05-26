@@ -21,6 +21,7 @@ function utils.match_flavour(tbl, cb)
 			end
 		end
 		cb(name, flavour, flavours)
+		return true
 	end
 	return matcher
 end
